@@ -219,8 +219,11 @@ Tabela_clust$Valor <- paste("R$", Tabela_clust$Valor, sep = " ")
 
 #####################################################
 
+# remover distancias para 
+
+rm(distances)
+
 # salvar resultados da clusterizacao para agilizar o carregamento do app
 
-save(Tabela_clust, file = "dados/Tabela_clust.RData")
-
+save(list = c("Tabela_clust", "Tabela_clust.plot"), file = "dados/Tabela_clust.RData")
 

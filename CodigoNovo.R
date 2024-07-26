@@ -225,5 +225,5 @@ rm(distances)
 
 # salvar resultados da clusterizacao para agilizar o carregamento do app
 
-save(list = c("Tabela_clust", "Tabela_clust.plot"), file = "dados/Tabela_clust.RData")
+save(list = ls(), file = "dados/Tabela_clust.RData")
 

@@ -3,6 +3,7 @@
 library(shiny)
 library(shinydashboard)
 library(tidyverse)
+library(shinyjs)
 
 # carregando resultados da clusterizacao
 

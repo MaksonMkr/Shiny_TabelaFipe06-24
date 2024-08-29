@@ -17,6 +17,9 @@ remove_char2 <- function(text) {
 remove_char3 <- function(text) {
   gsub("Ã¨", "e", text)
 }
+remove_char4 <- function(text) {
+  gsub("Ã©", "é", text)
+}
 
 Tabela_fipe_bruto <- Tabela_fipe_bruto |> 
   mutate(Modelo = sapply(Modelo, remove_char1))
@@ -24,6 +27,8 @@ Tabela_fipe_bruto <- Tabela_fipe_bruto |>
   mutate(Modelo = sapply(Modelo, remove_char2))
 Tabela_fipe_bruto <- Tabela_fipe_bruto |> 
   mutate(Modelo = sapply(Modelo, remove_char3))
+Tabela_fipe_bruto <- Tabela_fipe_bruto |> 
+  mutate(Modelo = sapply(Modelo, remove_char4))
 
 ## Retirar motos e caminhoes do conjunto de dados e selecionar Carros a partir de 2003
 Tabela_clust <- Tabela_fipe_bruto |> 
@@ -52,6 +57,23 @@ Tabela_clust$anoModelo[Tabela_clust$anoModelo == 32000] <- 2024
 ## colocar ano no modelo
 Tabela_clust$Modelo <- paste(Tabela_clust$Modelo, 
                              Tabela_clust$anoModelo, sep = " ")
+
+valores_unicos <- unique(Tabela_clust$Modelo)
+
+# Iterar sobre os valores únicos
+for (val in valores_unicos) {
+  # Identificar as linhas com o mesmo valor em coluna1
+  linhas_iguais <- which(Tabela_clust$Modelo == val)
+  
+  # Se houver mais de uma linha com o mesmo valor
+  if (length(linhas_iguais) > 1) {
+    # Concatena coluna1 e coluna2 para as linhas repetidas
+    Tabela_clust$Modelo[linhas_iguais] <- paste(Tabela_clust$Modelo[linhas_iguais], 
+                                                Tabela_clust$Combustivel[linhas_iguais], sep = " ")
+  }
+}
+
+rm(linhas_iguais, val, valores_unicos)
 
 ## Reajeitando coluna tração e câmbio
 Tabela_clust$tracao[Tabela_clust$tracao == "4X2"] <- "4x2"
@@ -147,7 +169,7 @@ library(factoextra)
 
 set.seed(10)
 
-indice <- sample(1:21820, 21820) # eu sei isso nem faz sentido
+indice <- sample(1:21817, 21817) # eu sei isso nem faz sentido
 
 x <- scale(Tabela_clust[indice, c(3:15)])
 
@@ -219,11 +241,13 @@ Tabela_clust$Valor <- paste("R$", Tabela_clust$Valor, sep = " ")
 
 #####################################################
 
-# remover distancias para 
+# remover distancias 
 
 rm(distances)
 
 # salvar resultados da clusterizacao para agilizar o carregamento do app
 
 save(list = ls(), file = "dados/Tabela_clust.RData")
+
+
 

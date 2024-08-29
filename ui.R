@@ -12,6 +12,28 @@ dashboardPage(
   ),
   
   dashboardBody(
+    useShinyjs(),
+    
+    tags$head(
+      tags$style(HTML("
+        #loading-content {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: white;
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      "))
+    ),
+    
+    # Div da mensagem de loading
+    div(id = "loading-content", h2("Carregando...")),
+    
     tags$head(tags$title("Título da Aba do Navegador")),
     
     tags$head(tags$style(HTML(

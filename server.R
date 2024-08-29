@@ -83,5 +83,8 @@ function(input, output, session) {
     
   })
   
+  # Remove a mensagem de loading após o carregamento completo
+  hide(id = "loading-content", anim = TRUE, animType = "fade")
+  
 
 }
